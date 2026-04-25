@@ -1,5 +1,10 @@
 package com.example.alquiler_de_vehiculos.repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class ClienteRepository {
+import com.example.alquiler_de_vehiculos.model.Cliente;
+
+@Repository
+public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
 }
