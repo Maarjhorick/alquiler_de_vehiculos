@@ -1,4 +1,4 @@
-package com.example.alquiler_de_vehiculos.model; // Asegúrate de que este package sea el correcto
+package com.example.alquiler_de_vehiculos.model; 
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,15 +6,15 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "vehiculos") // Nombre de la tabla en tu base de datos
-@Getter // Si no usas Lombok, tendrás que generar los Getters y Setters manualmente
+@Table(name = "vehiculos") 
+@Getter 
 @Setter
 public class Vehiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vehiculo")
-    private Integer id; // Usamos Integer en Java para INT(11)
+    private Integer id; 
 
     @Column(nullable = false, length = 20)
     private String placa;
@@ -37,9 +37,7 @@ public class Vehiculo {
     @Column(name = "precio_hora", precision = 10, scale = 2)
     private BigDecimal precioHora;
 
-    // Campos para relaciones (Foreign Keys) - Por ahora los manejaremos como IDs
-    // Más adelante, para un CRUD completo, deberías crear las Entidades (Modelo, Tipo, etc.)
-    // y usar @ManyToOne
+   
     @Column(name = "id_modelo", nullable = false)
     private Integer idModelo;
 
@@ -52,11 +50,9 @@ public class Vehiculo {
     @Column(name = "id_estado", nullable = false)
     private Integer idEstado;
 
-    // Constructor vacío (obligatorio para JPA)
     public Vehiculo() {
     }
 
-    // Constructor con campos (opcional pero útil)
     public Vehiculo(String placa, String color, Integer anio, BigDecimal precioDia, 
                     Integer idModelo, Integer idTipo, Integer idCombustible, Integer idEstado) {
         this.placa = placa;
