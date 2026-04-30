@@ -16,33 +16,27 @@ public class VehiculoService {
         this.vehiculoRepository = vehiculoRepository;
     }
 
-    // CREATE / UPDATE
     public Vehiculo saveVehiculo(Vehiculo vehiculo) {
         return vehiculoRepository.save(vehiculo);
     }
 
-    // READ (All)
     public List<Vehiculo> getAllVehiculos() {
         return vehiculoRepository.findAll();
     }
 
-    // READ (By ID)
     public Optional<Vehiculo> getVehiculoById(Integer id) {
         return vehiculoRepository.findById(id);
     }
 
-    // DELETE
     public void deleteVehiculo(Integer id) {
         vehiculoRepository.deleteById(id);
     }
-    
-    // Para el método PUT (Actualizar), necesitamos una lógica adicional
+
     public Vehiculo updateVehiculo(Integer id, Vehiculo vehiculoDetalles) {
-        // 1. Buscar el vehículo existente
+  
         Vehiculo vehiculoExistente = vehiculoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vehículo no encontrado con id: " + id));
 
-        // 2. Actualizar los campos
         vehiculoExistente.setPlaca(vehiculoDetalles.getPlaca());
         vehiculoExistente.setColor(vehiculoDetalles.getColor());
         vehiculoExistente.setAnio(vehiculoDetalles.getAnio());
@@ -55,7 +49,6 @@ public class VehiculoService {
         vehiculoExistente.setIdCombustible(vehiculoDetalles.getIdCombustible());
         vehiculoExistente.setIdEstado(vehiculoDetalles.getIdEstado());
 
-        // 3. Guardar el vehículo actualizado
         return vehiculoRepository.save(vehiculoExistente);
     }
 }

@@ -25,7 +25,7 @@ public class ClienteService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id no encontrado"));
     }
 
-    // crear
+   
     public Cliente create(Cliente cliente) {
         if (cliente.getIdCliente() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id ya existe");
@@ -34,7 +34,7 @@ public class ClienteService {
         return repository.save(cliente);
     }
 
-    // actualizar
+    
     public Cliente update(Integer id, Cliente cliente) {
         
         Cliente aux = repository.findById(id)
@@ -51,7 +51,7 @@ public class ClienteService {
         return repository.save(aux);
     }
 
-    // eliminar
+    
     public void delete(Integer id) {
         Cliente aux = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id no encontrado"));
