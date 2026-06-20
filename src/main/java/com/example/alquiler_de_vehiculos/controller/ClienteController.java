@@ -17,37 +17,38 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/clientes")
+@RequestMapping("/api/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
 
-    private final ClienteService service;
+    private final ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<List<Cliente>> listarClientes() {
+        return ResponseEntity.ok(clienteService.listarClientes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getByIdC(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<Cliente> obtenerCliente(@PathVariable Integer id) {
+        return ResponseEntity.ok(clienteService.obtenerCliente(id));
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody Cliente cliente) {
-        return new ResponseEntity<>(service.create(cliente), HttpStatus.CREATED);
+    public ResponseEntity<Cliente> crearCliente(@Valid @RequestBody Cliente cliente) {
+        return new ResponseEntity<>(clienteService.crearCliente(cliente), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> update(@PathVariable Integer id, @RequestBody Cliente cliente){
-        return ResponseEntity.ok(service.update(id, cliente));
+    public ResponseEntity<Cliente> actualizarCliente(@PathVariable Integer id, @Valid @RequestBody Cliente cliente){
+        return ResponseEntity.ok(clienteService.actualizarCliente(id, cliente));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id){
-        service.delete(id);
+    public ResponseEntity<Void> eliminarCliente(@PathVariable Integer id){
+        clienteService.eliminarCliente(id);
         return ResponseEntity.noContent().build();
     }
 }

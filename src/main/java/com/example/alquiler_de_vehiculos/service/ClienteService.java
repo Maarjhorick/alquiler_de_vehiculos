@@ -8,37 +8,40 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.alquiler_de_vehiculos.model.Cliente;
 import com.example.alquiler_de_vehiculos.repository.ClienteRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ClienteService {
 
-    private final ClienteRepository repository;
+    private final ClienteRepository clienteRepository;
 
-    public List<Cliente> findAll() {
-        return repository.findAll();
+    public List<Cliente> listarClientes() {
+        return clienteRepository.findAll();
     }
 
-    public Cliente findById(Integer id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id no encontrado"));
+    public Cliente obtenerCliente(Integer idCliente) {
+        return clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
     }
 
-   
-    public Cliente create(Cliente cliente) {
+   @Transactional
+    public Cliente crearCliente(Cliente cliente) {
         if (cliente.getIdCliente() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id ya existe");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente ya existe");
 
         }
-        return repository.save(cliente);
+        validarDocumentoUnico(cliente.getNumeroDocumento(), null);
+        return clienteRepository.save(cliente);
     }
 
-    
-    public Cliente update(Integer id, Cliente cliente) {
+    @Transactional
+    public Cliente actualizarCliente(Integer idCliente, Cliente cliente) {
         
-        Cliente aux = repository.findById(id)
+        Cliente aux = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id no encontrado"));
+        validarDocumentoUnico(cliente.getNumeroDocumento(), idCliente);
 
         aux.setNombres(cliente.getNombres());
         aux.setApellidos(cliente.getApellidos());
@@ -48,14 +51,22 @@ public class ClienteService {
         aux.setEmail(cliente.getEmail());
         aux.setLicenciaConducir(cliente.getLicenciaConducir());
 
-        return repository.save(aux);
+        return clienteRepository.save(aux);
     }
 
-    
-    public void delete(Integer id) {
-        Cliente aux = repository.findById(id)
+    @Transactional
+    public void eliminarCliente(Integer idCliente) {
+        Cliente aux = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id no encontrado"));
 
-        repository.deleteById(aux.getIdCliente());
+        clienteRepository.deleteById(aux.getIdCliente());
+    }
+
+    private void validarDocumentoUnico(String numeroDocumento, Integer idCliente) {
+        clienteRepository.findByNumeroDocumento(numeroDocumento)
+                .filter(cliente -> !cliente.getIdCliente().equals(idCliente))
+                .ifPresent(cliente -> {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "El numero de documento ya existe");
+                });
     }
 }

@@ -1,67 +1,82 @@
-package com.example.alquiler_de_vehiculos.model; 
+package com.example.alquiler_de_vehiculos.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 import java.math.BigDecimal;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
-@Table(name = "vehiculos") 
-@Getter 
+@Table(name = "vehiculos")
+@Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vehiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_vehiculo")
-    private Integer id; 
+    private Integer idVehiculo;
 
-    @Column(nullable = false, length = 20)
+    @NotBlank
+    @Column(nullable = false, unique = true, length = 20)
     private String placa;
 
     @Column(length = 50)
+    @NotBlank
     private String color;
 
     @Column(name = "anio")
     private Integer anio;
 
-    @Column(name = "numero_motor", length = 100)
+    @NotBlank
+    @Column(name = "numero_motor", unique = true, nullable = false, length = 20)
     private String numeroMotor;
 
-    @Column(name = "numero_vin", length = 100)
+    @NotBlank
+    @Column(name = "numero_vin", unique = true, nullable = false, length = 17)
     private String numeroVin;
 
-    @Column(name = "precio_dia", precision = 10, scale = 2)
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "precio_dia", precision = 10, scale = 2, nullable = false)
     private BigDecimal precioDia;
 
-    @Column(name = "precio_hora", precision = 10, scale = 2)
+    @NotNull
+    @PositiveOrZero
+    @Column(name = "precio_hora", precision = 10, scale = 2, nullable = false)
     private BigDecimal precioHora;
 
-   
-    @Column(name = "id_modelo", nullable = false)
-    private Integer idModelo;
+    // Relaciones con otras tablas
+    @ManyToOne
+    @JoinColumn(name = "id_modelo", nullable = false)
+    @NotNull
+    @Valid
+    private Modelo modelo;
 
-    @Column(name = "id_tipo", nullable = false)
-    private Integer idTipo;
+    @ManyToOne
+    @JoinColumn(name = "id_tipo", nullable = false)
+    @NotNull
+    @Valid
+    private TipoVehiculo tipo;
 
-    @Column(name = "id_combustible", nullable = false)
-    private Integer idCombustible;
+    @ManyToOne
+    @JoinColumn(name = "id_combustible", nullable = false)
+    @NotNull
+    @Valid
+    private Combustible combustible;
 
-    @Column(name = "id_estado", nullable = false)
-    private Integer idEstado;
+    @ManyToOne
+    @JoinColumn(name = "id_estado", nullable = false)
+    @NotNull
+    @Valid
+    private EstadoVehiculo estado;
 
-    public Vehiculo() {
-    }
-
-    public Vehiculo(String placa, String color, Integer anio, BigDecimal precioDia, 
-                    Integer idModelo, Integer idTipo, Integer idCombustible, Integer idEstado) {
-        this.placa = placa;
-        this.color = color;
-        this.anio = anio;
-        this.precioDia = precioDia;
-        this.idModelo = idModelo;
-        this.idTipo = idTipo;
-        this.idCombustible = idCombustible;
-        this.idEstado = idEstado;
-    }
 }

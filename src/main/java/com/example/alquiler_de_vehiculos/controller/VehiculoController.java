@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/vehiculos") 
@@ -34,19 +35,14 @@ public class VehiculoController {
     }
 
     @PostMapping
-    public ResponseEntity<Vehiculo> crearVehiculo(@RequestBody Vehiculo vehiculo) {
+    public ResponseEntity<Vehiculo> crearVehiculo(@Valid @RequestBody Vehiculo vehiculo) {
         Vehiculo nuevoVehiculo = vehiculoService.saveVehiculo(vehiculo);
         return new ResponseEntity<>(nuevoVehiculo, HttpStatus.CREATED); 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vehiculo> actualizarVehiculo(@PathVariable Integer id, @RequestBody Vehiculo vehiculoDetalles) {
-        try {
-            Vehiculo vehiculoActualizado = vehiculoService.updateVehiculo(id, vehiculoDetalles);
-            return ResponseEntity.ok(vehiculoActualizado); 
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build(); 
-        }
+    public ResponseEntity<Vehiculo> actualizarVehiculo(@PathVariable Integer id, @Valid @RequestBody Vehiculo vehiculoDetalles) {
+        return ResponseEntity.ok(vehiculoService.updateVehiculo(id, vehiculoDetalles));
     }
 
     @DeleteMapping("/{id}")

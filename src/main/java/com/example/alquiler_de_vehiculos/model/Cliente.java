@@ -1,15 +1,26 @@
 package com.example.alquiler_de_vehiculos.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "Clientes")
@@ -19,27 +30,40 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cliente")
     private Integer idCliente;
 
-    @Column
-    private String tipoDocumento;
-
-    @Column(unique = true, nullable = false)
-    private String numeroDocumento;
-
-    @Column(nullable = false)
+    @NotBlank
+    @Column(nullable = false, length = 100)
     private String nombres;
 
-    @Column(nullable = false)
+    @NotBlank
+    @Column(nullable = false, length = 100)
     private String apellidos;
 
-    @Column
+    @Column(length = 20)
+    private String tipoDocumento;
+
+    @NotBlank
+    @Column(unique = true, nullable = false, length = 20)
+    private String numeroDocumento;
+
+    @NotBlank
+    @Column(nullable = false, length = 15)
     private String telefono;
 
-    @Column
+    @Email
+    @NotBlank
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(nullable = false)
+    @NotBlank
+    @Column(nullable = false, unique = true, length = 15)
     private String licenciaConducir;
+
+    // Relación con Alquileres
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Alquiler> alquileres;
 
 }
