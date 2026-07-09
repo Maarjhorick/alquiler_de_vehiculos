@@ -9,5 +9,5 @@ import com.example.alquiler_de_vehiculos.model.EstadoAlquiler;
 
 @Repository
 public interface EstadoAlquilerRepository extends JpaRepository<EstadoAlquiler, Integer> {
-    Optional<EstadoAlquiler> findByEstadoAlquilerIgnoreCase(String estadoAlquiler);
+    Optional<EstadoAlquiler> findByNombreEstadoIgnoreCase(String nombreEstado);
 }
