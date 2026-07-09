@@ -55,7 +55,7 @@ public class AlquilerService {
         EstadoVehiculo estadoNoDisponible = estadoVehiculoRepository.findByNombreEstadoIgnoreCase("NO DISPONIBLE")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT,
                         "Estado de vehiculo NO DISPONIBLE no configurado"));
-        EstadoAlquiler estadoActivo = estadoAlquilerRepository.findByEstadoAlquilerIgnoreCase("ACTIVO")
+        EstadoAlquiler estadoActivo = estadoAlquilerRepository.findByNombreEstadoIgnoreCase("ACTIVO")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT,
                         "Estado de alquiler ACTIVO no configurado"));
 
@@ -90,7 +90,7 @@ public class AlquilerService {
         EstadoVehiculo estadoDisponible = estadoVehiculoRepository.findByNombreEstadoIgnoreCase("DISPONIBLE")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT,
                         "Estado de vehiculo DISPONIBLE no configurado"));
-        EstadoAlquiler estadoFinalizado = estadoAlquilerRepository.findByEstadoAlquilerIgnoreCase("FINALIZADO")
+        EstadoAlquiler estadoFinalizado = estadoAlquilerRepository.findByNombreEstadoIgnoreCase("FINALIZADO")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT,
                         "Estado de alquiler FINALIZADO no configurado"));
         alquiler.setEstado(estadoFinalizado);
