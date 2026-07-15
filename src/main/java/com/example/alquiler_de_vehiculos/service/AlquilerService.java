@@ -109,4 +109,34 @@ public class AlquilerService {
     public List<Alquiler> obtenerAlquileresPorVehiculo(Integer idVehiculo) {
         return alquilerRepository.findByVehiculo_IdVehiculo(idVehiculo);
     }
+
+    public List<Alquiler> listarAlquileres() {
+        return alquilerRepository.findAll();
+    }
+
+    @Transactional
+    public Alquiler cancelarAlquiler(Integer idAlquiler) {
+        Alquiler alquiler = alquilerRepository.findById(idAlquiler)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Alquiler no encontrado"));
+        if (alquiler.getFechaFinReal() != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "El alquiler ya fue finalizado o cancelado");
+        }
+
+        EstadoVehiculo estadoDisponible = estadoVehiculoRepository.findByNombreEstadoIgnoreCase("DISPONIBLE")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT,
+                        "Estado de vehiculo DISPONIBLE no configurado"));
+        EstadoAlquiler estadoCancelado = estadoAlquilerRepository.findByNombreEstadoIgnoreCase("CANCELADO")
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT,
+                        "Estado de alquiler CANCELADO no configurado"));
+
+        alquiler.setFechaFinReal(LocalDate.now());
+        alquiler.setEstado(estadoCancelado);
+
+        Vehiculo vehiculo = alquiler.getVehiculo();
+        vehiculo.setEstado(estadoDisponible);
+        vehiculoRepository.save(vehiculo);
+
+        return alquilerRepository.save(alquiler);
+    }
 }
