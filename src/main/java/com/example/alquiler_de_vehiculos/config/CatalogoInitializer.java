@@ -41,6 +41,7 @@ public class CatalogoInitializer implements CommandLineRunner {
         crearEstadoVehiculo("NO DISPONIBLE");
         crearEstadoAlquiler("ACTIVO");
         crearEstadoAlquiler("FINALIZADO");
+        crearEstadoAlquiler("CANCELADO");
         crearRol("ADMIN", "Administrador principal del sistema");
         crearRol("CLIENTE", "Usuario de la plataforma de alquiler");
         crearCatalogosPrueba();
@@ -73,8 +74,12 @@ public class CatalogoInitializer implements CommandLineRunner {
         if (combustibleRepository.count() == 0) {
             combustibleRepository.save(new Combustible(null, "GASOLINA"));
         }
+
         if (metodoPagoRepository.count() == 0) {
             metodoPagoRepository.save(new MetodoPago(null, "TARJETA"));
+            metodoPagoRepository.save(new MetodoPago(null, "EFECTIVO"));
+            metodoPagoRepository.save(new MetodoPago(null, "YAPE"));
+            metodoPagoRepository.save(new MetodoPago(null, "TRANSFERENCIA"));
         }
     }
 }

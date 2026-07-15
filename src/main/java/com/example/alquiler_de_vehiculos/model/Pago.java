@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "pagos")
@@ -32,7 +31,6 @@ public class Pago {
 
     @ManyToOne
     @JoinColumn(name = "id_alquiler", nullable = false)
-    @JsonIgnore
     private Alquiler alquiler;
 
     @ManyToOne

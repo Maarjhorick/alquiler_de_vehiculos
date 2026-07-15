@@ -50,4 +50,8 @@ public class PagoService {
     public List<Pago> obtenerPagosPorAlquiler(Integer idAlquiler) {
         return pagoRepository.findByAlquiler_IdAlquiler(idAlquiler);
     }
+
+    public List<Pago> listarPagos() {
+    return pagoRepository.findAll();
+}
 }

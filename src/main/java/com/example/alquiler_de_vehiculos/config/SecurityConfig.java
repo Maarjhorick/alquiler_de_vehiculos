@@ -29,7 +29,12 @@ public class SecurityConfig  {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/auth/registro", "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
+                .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/pagos").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/catalogos/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/catalogos/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
                 .requestMatchers("/api/**").hasAnyRole("ADMIN", "EMPLEADO")
                 .anyRequest().permitAll()
             )

@@ -35,4 +35,9 @@ public class PagoController {
     public List<Pago> obtenerPagosPorAlquiler(@PathVariable("idAlquiler") Integer idAlquiler) {
         return pagoService.obtenerPagosPorAlquiler(idAlquiler);
     }
+
+    @GetMapping
+    public List<Pago> listarPagos() {
+        return pagoService.listarPagos();
+}
 }

@@ -27,6 +27,11 @@ public class AlquilerController {
 
     private final AlquilerService alquilerService;
 
+    @GetMapping
+    public List<Alquiler> listarAlquileres() {
+        return alquilerService.listarAlquileres();
+    }
+
     @PostMapping
     public Alquiler crearAlquiler(@RequestParam @NotNull Integer idCliente,
                                   @RequestParam @NotNull Integer idVehiculo,
@@ -49,5 +54,10 @@ public class AlquilerController {
     public Alquiler finalizarAlquiler(@PathVariable Integer idAlquiler,
                                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFinReal) {
         return alquilerService.finalizarAlquiler(idAlquiler, fechaFinReal);
+    }
+
+    @PutMapping("/{idAlquiler}/cancelar")
+    public Alquiler cancelarAlquiler(@PathVariable Integer idAlquiler) {
+        return alquilerService.cancelarAlquiler(idAlquiler);
     }
 }
